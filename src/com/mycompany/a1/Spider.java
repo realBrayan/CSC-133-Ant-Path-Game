@@ -4,14 +4,10 @@ import com.codename1.charts.util.ColorUtil;
 import java.util.Random; 
 
 public class Spider extends Moveable {
-
-//	private int damageAmount;	
 	
 	private static final Random rand = new Random();
 	
 	public Spider() {
-		
-		//super(ColorUtil.BLACK, 25, new Random().nextInt(10) + 5, new Random().nextInt(359));
 		
 		super(generateRandomSize(), generateRandomLocation(), ColorUtil.BLACK, rand.nextInt(360), 5 + rand.nextInt(11));
 		
@@ -29,13 +25,13 @@ public class Spider extends Moveable {
 	
 	
 	@Override
-	public void setFoodLevel(int fl) {
+	public void setFoodLevel(int foodLevel) {
 		// dont update. Spiders aren't foodies so they cannot update foodlevels.
 		System.out.println("Spiders cannot update their food levels.");
 	}
 	
 	@Override
-	public void setColor(int c) {
+	public void setColor(int color) {
 		// set to black no matter what c is.
 		super.setColor(ColorUtil.BLACK);
 	}	

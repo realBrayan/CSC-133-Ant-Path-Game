@@ -21,7 +21,7 @@ public class Flag extends Fixed {
 	}
 	
 	@Override
-	public void setColor(int c) {
+	public void setColor(int color) {
 		// do nothing.
 		System.out.println("Cannot change the Flag's colors.");
 	}

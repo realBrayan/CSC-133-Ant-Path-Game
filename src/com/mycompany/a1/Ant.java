@@ -20,12 +20,7 @@ public class Ant extends Moveable implements IFoodie {
 		this.maximumSpeed = maxSpeed; // should be set to something like 50
 		this.foodConsumptionRate = consumptionRate; // probably set it to something low, like 2 or 3
 		this.healthLevel = 10;
-		this.lastFlagReached = 1;
-		 
-		 // set the position to the first flag. 
-		 //this.setLocation(100, 100);
-
-		
+		this.lastFlagReached = 1;	
 	}
 	
 	public int getMaximumSpeed () {
@@ -84,9 +79,9 @@ public class Ant extends Moveable implements IFoodie {
 		}
 	}
 	
-	public void setLastFlagReached(int f) {
-		if ( f > 0 && f == lastFlagReached + 1) {
-			lastFlagReached = f;
+	public void setLastFlagReached(int flag) {
+		if ( flag > 0 && flag == lastFlagReached + 1) {
+			lastFlagReached = flag;
 		}
 	}
 	
