@@ -34,7 +34,6 @@ public class Ant extends Moveable implements IFoodie {
 		return theAnt;
 	}
 	
-	
 	/*
 	public Ant(Point startLocation, int size, int maxSpeed, int consumptionRate) {
 		
@@ -63,6 +62,10 @@ public class Ant extends Moveable implements IFoodie {
 		return this.foodConsumptionRate;
 	}
 	
+	public int getFoodLevel() {
+		return this.foodLevel;
+	}
+	
 	
 	@Override
 	public void setSpeed(int speed) {
@@ -84,6 +87,10 @@ public class Ant extends Moveable implements IFoodie {
 	public void setFoodConsumption(int rate) {
 		if (rate >= 0) {
 			this.foodConsumptionRate = rate;
+		}
+		else {
+			System.out.println("Warning: Attempted to set negative food consumption rate.");
+			System.out.println("New rate was ignored. Rate is still: " + this.getFoodConsumptionRate());
 		}
 	}
 	
@@ -110,12 +117,78 @@ public class Ant extends Moveable implements IFoodie {
 	}
 	
 	@Override
+	public void setFoodLevel(int newFoodLevel) {
+		this.foodLevel = Math.max(0,  newFoodLevel);
+		if (this.foodLevel == 0) {
+			setSpeed(0);
+		}
+	}
+	
+	// --- Ant Actions moved in from GameWorld ---
+	
+	public void accelerate() {
+		if (foodLevel > 0 && healthLevel > 0) {
+			
+			int currSpeed = theAnt.getSpeed();
+			theAnt.setSpeed(currSpeed + 5);
+			System.out.println("Accelerating the Ant.");
+		}
+	}
+	
+	public void brake() {
+		int currSpeed = theAnt.getSpeed();
+		int newSpeed = Math.max(0, currSpeed - 5);
+		theAnt.setSpeed(newSpeed);
+		System.out.println("Braking the Ant.");
+	}
+	
+	public void turnLeft() {
+		int currHeading = theAnt.getHeading();
+		theAnt.setHeading(currHeading - 5);
+		System.out.println("Turning left.");
+	}
+	
+	public void turnRight() {
+		int currHeading = theAnt.getHeading();
+		theAnt.setHeading(currHeading + 5);
+		System.out.println("Turning right.");
+	}
+	
+	public void collideWithFlag(int flagSequenceNumber) {
+		theAnt.setLastFlagReached(flagSequenceNumber);
+	}
+	
+	private void updateStateAfterMove() {
+		setFoodLevel(theAnt.foodLevel - theAnt.foodConsumptionRate);
+		
+		if (foodLevel <= 0) {
+			setSpeed(0);
+		}
+	}
+	
+	
+	@Override
+	public void move() { // might need to take in world boundaries to make sure ant doesn't run away here.
+		if (healthLevel <= 0 || foodLevel <= 0) {
+			if(getSpeed() != 0) {
+				super.setSpeed(0);
+			}
+			return;
+		}
+		
+		super.move();
+		updateStateAfterMove();
+	}
+	
+	
+	@Override
 	public String toString() {
 		String parentString = super.toString();
 		String myString = " maxSpeed=" + maximumSpeed +
 						  " foodConsumptionRate=" + foodConsumptionRate + 
 						  " healthLevel=" + healthLevel +
-						  " lastFlagReached=" + lastFlagReached;
+						  " lastFlagReached=" + lastFlagReached +
+						  " foodLevel=" + foodLevel;
 		return "Ant: " + parentString + myString;
 	}
 	

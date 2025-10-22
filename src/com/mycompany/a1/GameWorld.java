@@ -75,12 +75,29 @@ public class GameWorld extends Observable {
 	}
 	
 	// --- getters for ScoreView ---
-	public int getLives() {return lives;}
-	public int getClock() {return clock;}
-	public boolean isSoundOn() {return sound;}
-	public int getAntLastFlagReached() { return Ant.getInstance().getLastFlagReached();}
-	public int getAntFoodLevel() {return Ant.getInstance().getFoodLevel();}
-	public int getAntHealthLevel() {return Ant.getInstance().getHealthLevel();}
+	public int getLives() {
+		return lives;
+	}
+	
+	public int getClock() {
+		return clock;
+	}
+	
+	public boolean isSoundOn() {
+		return sound;
+	}
+	
+	public int getAntLastFlagReached() { 
+		return Ant.getInstance().getLastFlagReached();
+	}
+	
+	public int getAntFoodLevel() {
+		return Ant.getInstance().getFoodLevel();
+	}
+	
+	public int getAntHealthLevel() {
+		return Ant.getInstance().getHealthLevel();
+	}
 	
 	// --- Sound Controls ---
 	public void setSound(boolean setting) {
@@ -206,10 +223,6 @@ public class GameWorld extends Observable {
         
         // this is probably where I want to check for collisions in the future
         
-        // Ant's food level decreases 
-        if (ant != null) {
-            ant.setFoodLevel(ant.getFoodLevel() - ant.getFoodConsumptionRate());
-        }
         
         System.out.println("Clock has ticked. Current time: " + this.clock);
         checkAntState(); // Check if ant lost a life
