@@ -8,11 +8,34 @@ public class Ant extends Moveable implements IFoodie {
 	private int foodConsumptionRate;
 	private int healthLevel;
 	private int lastFlagReached;
+	private int foodLevel;
 	
 	private static final int ANT_COLOR = ColorUtil.rgb(255, 0, 0);
 	private static final int INITIAL_SPEED = 5;
 	
+	private static Ant theAnt;
 	
+	private Ant() {
+		super(100, new Point(100.0f, 100.0f), ANT_COLOR, 0, INITIAL_SPEED);
+		
+		this.maximumSpeed = 50;
+		this.foodLevel = 10;
+		this.healthLevel = 10;
+		this.foodConsumptionRate = 2;
+		this.lastFlagReached = 1;
+		
+	}
+	
+	public static Ant getInstance() {
+		if (theAnt == null) {
+			theAnt = new Ant();
+		}
+		
+		return theAnt;
+	}
+	
+	
+	/*
 	public Ant(Point startLocation, int size, int maxSpeed, int consumptionRate) {
 		
 		super(size, startLocation, ANT_COLOR, 0, INITIAL_SPEED);
@@ -22,6 +45,7 @@ public class Ant extends Moveable implements IFoodie {
 		this.healthLevel = 10;
 		this.lastFlagReached = 1;	
 	}
+	*/
 	
 	public int getMaximumSpeed () {
 		return this.maximumSpeed;
