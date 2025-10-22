@@ -209,7 +209,6 @@ public class GameWorld extends Observable {
 
     public void tickClock() {
         this.clock++;
-		Ant ant = Ant.getInstance();
 
         // Update all movable objects 
         IIterator moveIter = gameObjects.getIterator();
