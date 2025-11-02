@@ -1,9 +1,0 @@
-package com.mycompany.a1;
-
-public class Movable extends GameObject {
-
-	public Movable() {
-		// TODO Auto-generated constructor stub
-	}
-
-}

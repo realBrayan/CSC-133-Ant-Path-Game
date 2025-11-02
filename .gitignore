@@ -1,0 +1,44 @@
+# Java & Compiled Code
+*.class
+*.jar
+*.war
+*.ear
+
+# Build output directories
+bin/
+build/
+dist/
+
+# Eclipse metadata and settings
+.metadata/
+.settings/
+.classpath
+.project
+.loadpath
+.recommenders/
+.navigation/
+.externalToolBuilders/
+
+# Codename One specific files
+CodeNameOneBuildClient.jar
+JavaSE.jar
+lib/CodenameOne_SRC.zip
+nativej2me.res
+codenameone_settings.properties
+build.props
+Versions.properties
+*.launch
+
+# Log files
+*.log
+hs_err_pid*
+
+# Temporary and backup files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Other artifacts found in your project
+*.zip
+*.pdf

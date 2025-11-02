@@ -1,9 +1,0 @@
-package com.mycompany.a1;
-
-public class FoodStation extends Fixed {
-
-	public FoodStation() {
-		// TODO Auto-generated constructor stub
-	}
-
-}
