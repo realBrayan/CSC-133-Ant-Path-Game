@@ -39,6 +39,10 @@ hs_err_pid*
 *.swp
 *~
 
-# Other artifacts found in your project
+# Other artifacts found in the project
 *.zip
 *.pdf
+
+# Operating System specific files
+.DS_Store
+Thumbs.db
