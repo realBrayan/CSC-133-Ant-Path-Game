@@ -1,0 +1,51 @@
+package com.mycompany.a1;
+
+import com.codename1.charts.util.ColorUtil;
+import java.util.Random; 
+
+public class Spider extends Moveable {
+
+	private int damageAmount;	
+	
+	public Spider() {
+		// TODO Auto-generated constructor stub
+		this.setColor(ColorUtil.BLACK);
+		
+		Random rand1 = new Random();
+		this.setSpeed(5 + rand1.nextInt(10));
+		
+		
+	}
+	
+	public int getDamageAmount() {
+		return damageAmount;
+	}
+	
+	public void updateHeading() {
+		
+	}
+	
+	@Override
+	public void setFoodLevel(int fl) {
+		// dont update. Spiders should aren't foodies so they cannot update foodlevels.
+		System.out.println("Spiders cannot update their food levels.");
+	}
+	
+	
+	@Override
+	public void move() {
+		
+		Random rand = new Random();
+		
+		int randomNum = rand.nextInt(10);
+		
+		int newHeading = this.getHeading() + (-5 + randomNum) ;
+		
+		this.setHeading(newHeading);
+		
+		
+		// if the spiders center hits the side of the world, it changes heading and does not move out of bounds. 
+		
+		// if the spider gets to the same location as the ant, it decreases the health level by 1
+	}
+}

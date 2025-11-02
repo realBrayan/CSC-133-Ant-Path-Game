@@ -1,0 +1,61 @@
+package com.mycompany.a1;
+
+public class Ant extends Moveable implements iFoodie {
+	
+	private int maximumSpeed; 
+	private int foodConsumptionRate;
+	private int healthLevel;
+	private int lastFlagReached;
+	private int lives;
+	
+	
+	public Ant() {
+		// TODO Auto-generated constructor stub
+		 maximumSpeed = 25;
+		 foodConsumptionRate = 2;
+		 healthLevel = 10;
+		 
+		
+	}
+	
+	public int getMaximumSpeed () {
+		return maximumSpeed;
+	}	
+	
+	public int getHealthLevel() {
+		return healthLevel;
+	}
+	
+	public int getLastFlagReached() {
+		return lastFlagReached;
+	}
+	
+	public int getLives() {
+		return lives;
+	}
+	
+	public void setFoodConsumption(int fc) {
+		if (fc >= 0) {
+			foodConsumptionRate = fc;
+		}
+	}
+	
+	public void setHealthLevel(int hl) {
+		if (hl >= 0 && hl <= 10) {
+			healthLevel = hl;
+			
+			if (this.getSpeed() > maximumSpeed * (healthLevel / 10)) {
+				this.setSpeed(maximumSpeed * (healthLevel / 10));
+			}
+		}
+	}
+	
+	public void setLastFlagReached(int lf) {
+		if ( lf > 0) {
+			lastFlagReached = lf;
+		}
+	}
+	
+	
+	
+}

@@ -1,0 +1,14 @@
+package com.mycompany.a1;
+
+public class Flag extends Fixed {
+	
+	private int sequenceNumber;
+	
+	public Flag() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public int getSequenceNumber() {
+		return sequenceNumber;
+	}
+}

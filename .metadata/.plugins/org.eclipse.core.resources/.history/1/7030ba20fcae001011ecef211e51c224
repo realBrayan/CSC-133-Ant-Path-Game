@@ -1,0 +1,17 @@
+package com.mycompany.a1;
+
+public class GameObjectIterator implements IIterator {
+
+	@Override
+	public boolean hasNext() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public GameObject getNext() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

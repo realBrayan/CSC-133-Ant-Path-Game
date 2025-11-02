@@ -1,0 +1,22 @@
+package com.mycompany.a1;
+
+import com.codename1.ui.Command;
+import com.codename1.ui.events.ActionEvent;
+import com.mycompany.a1.GameWorld;
+
+public class RightTurnCommand extends Command {
+
+	private GameWorld gw;
+	
+	public RightTurnCommand(GameWorld gw) {
+		super("Right");
+		this.gw = gw;
+	}
+	
+	@Override 
+	public void actionPerformed(ActionEvent evt) {
+		gw.turnAntRight();
+		
+		System.out.println("Right Turn command invoked.");
+	}
+}

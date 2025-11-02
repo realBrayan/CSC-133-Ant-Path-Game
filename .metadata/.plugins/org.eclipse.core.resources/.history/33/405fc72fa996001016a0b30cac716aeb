@@ -1,0 +1,18 @@
+package com.mycompany.a1;
+
+public class Spider extends Moveable {
+
+	private int damageAmount;	
+	
+	public Spider() {
+		// TODO Auto-generated constructor stub
+		
+	}
+	
+	public int getDamageAmount() {
+		return damageAmount;
+	}
+	
+	public void updateHeading() {
+
+}

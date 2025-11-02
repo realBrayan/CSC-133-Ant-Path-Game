@@ -1,0 +1,36 @@
+package com.mycompany.a1;
+
+import com.codename1.charts.util.ColorUtil;
+import java.util.Random; 
+
+public class Spider extends Moveable {
+
+	private int damageAmount;	
+	
+	public Spider() {
+		// TODO Auto-generated constructor stub
+		this.setColor(ColorUtil.BLACK);
+		
+		
+	}
+	
+	public int getDamageAmount() {
+		return damageAmount;
+	}
+	
+	public void updateHeading() {
+		
+	}
+	
+	public void move() {
+		
+		int newHeading = this.getHeading() + (-5 + nextInt(10)) ;
+		
+		this.setHeading(newHeading);
+		
+		
+		// if the spiders center hits the side of the world, it changes heading and does not move out of bounds. 
+		
+		// if the spider gets to the same location as the ant, it decreases the health level by 1
+	}
+}

@@ -1,0 +1,26 @@
+package com.mycompany.a1;
+
+public class FoodStation extends Fixed {
+
+	private int capacity;
+	private boolean empty;
+		
+	public FoodStation() {
+		// TODO Auto-generated constructor stub
+		this.setSize(100);
+		capacity = this.getSize() * 10;
+	}
+	
+	public int getCapacity() {
+		return capacity;
+	}
+	
+	public boolean isEmpty() {
+		return empty;
+	}
+	
+	public void setEmpty() {
+		empty = true;
+	}
+	
+}

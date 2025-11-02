@@ -1,0 +1,32 @@
+package com.mycompany.a1;
+
+public class Moveable extends GameObject {
+	
+	private int heading;
+	private int speed;
+	private int foodLevel;
+	
+	public Moveable() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public int getHeading() {
+		return heading;
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public void setHeading(int h) {
+		heading = h;
+	}
+	
+	public void setSpeed(int s) {
+		speed = s;
+	}
+	
+	public void move() {
+		// do math to make it's point move
+	}
+}

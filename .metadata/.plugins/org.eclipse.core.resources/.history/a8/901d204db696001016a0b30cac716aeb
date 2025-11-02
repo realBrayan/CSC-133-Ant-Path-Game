@@ -1,0 +1,51 @@
+package com.mycompany.a1;
+
+public class Moveable extends GameObject {
+	
+	private int heading;
+	private int speed;
+	private int foodLevel;
+	
+	public Moveable() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public int getHeading() {
+		return heading;
+	}
+
+	public int getSpeed() {
+		return speed;
+	}
+	
+	public int getFoodLevel() {
+		return foodLevel;
+	}
+	
+	public void setHeading(int h) {
+		
+		if ( h >= 0 && h <= 360) {
+			heading = h;
+		}
+	}
+	
+	public void setSpeed(int s) {
+		if (s >= 0) {
+			speed = s;
+		}
+	}
+	
+	public void setFoodLevel(int f) {
+		if (f > 0) {
+			foodLevel = f;
+		}
+		else if (f == 0) {
+			foodLevel = f;
+			speed = 0;
+		}
+	}
+	
+	public void move() {
+		// do math to make it's point move
+	}
+}

@@ -1,0 +1,1 @@
+My project worked on the remote ecs machine. It also ran on the command line. 
