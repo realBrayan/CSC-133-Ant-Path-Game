@@ -1,0 +1,1 @@
+My project was able to run on the ECS-General AVD and on the command line. 

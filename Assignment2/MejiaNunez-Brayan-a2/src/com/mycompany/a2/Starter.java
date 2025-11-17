@@ -1,4 +1,4 @@
-  cpackage com.mycompany.a2;
+package com.mycompany.a2;
 
 
 import static com.codename1.ui.CN.*;

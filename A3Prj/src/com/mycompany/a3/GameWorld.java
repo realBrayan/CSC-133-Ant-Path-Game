@@ -1,0 +1,333 @@
+package com.mycompany.a3;
+import java.util.ArrayList;
+import java.util.Random;
+import com.codename1.charts.util.ColorUtil;
+import com.codename1.charts.models.Point;
+
+import java.util.Observable;
+
+
+public class GameWorld extends Observable {
+	
+	private GameObjectCollection gameObjects;
+	
+	private int clock;
+	private int lives;
+	private int lastFlagNum; // To know when the game has been won.
+	
+	private boolean sound;
+	@SuppressWarnings("unused")
+	private double worldWidth;
+	@SuppressWarnings("unused")
+	private double worldHeight;
+	//private Random random = new Random();
+	
+	private static final int INITIAL_LIVES = 3;
+	private static final int NUM_FLAGS = 4;
+	
+	public GameWorld() {
+		this.gameObjects = new GameObjectCollection();
+		this.clock = 0;
+		this.lives = INITIAL_LIVES;
+		this.sound = false; // Sound starts off
+		// worldWidth and worldHeight are set later
+	}
+	
+	
+	public void init() {
+
+		gameObjects = new GameObjectCollection();
+		
+		
+		// Create flags
+		Flag flag1 = new Flag(1, new Point(200.0f, 200.0f));
+		gameObjects.add(flag1);
+		gameObjects.add(new Flag(2, new Point(200.0f, 800.0f)));
+        gameObjects.add(new Flag(3, new Point(700.0f, 800.0f)));
+        gameObjects.add(new Flag(4, new Point(900.0f, 400.0f)));
+        this.lastFlagNum = NUM_FLAGS; // game the global variable based on number of flags added		
+		
+        // Add Ant
+        gameObjects.add(Ant.getInstance());
+        
+        // Add Spiders
+        gameObjects.add(new Spider());
+        gameObjects.add(new Spider());
+        
+        // Add Food Stations
+        gameObjects.add(new FoodStation());
+        gameObjects.add(new FoodStation());
+        gameObjects.add(new FoodStation());
+        gameObjects.add(new FoodStation());
+        
+        System.out.println("Game World Initialized.");
+        setChanged();
+        notifyObservers(); // Notify MapView and ScoreView
+        
+	}
+	
+	public void setWorldSize(double width, double height) {
+		this.worldWidth = width;
+		this.worldHeight = height;
+		System.out.println("World size set to: " + width + "x" + height);
+		
+		// TODO
+		// might add code to validate object positions and move them if out of bounds here. 
+		
+	}
+	
+	// --- getters for ScoreView ---
+	public int getLives() {
+		return lives;
+	}
+	
+	public int getClock() {
+		return clock;
+	}
+	
+	public boolean isSoundOn() {
+		return sound;
+	}
+	
+	public int getAntLastFlagReached() { 
+		return Ant.getInstance().getLastFlagReached();
+	}
+	
+	public int getAntFoodLevel() {
+		return Ant.getInstance().getFoodLevel();
+	}
+	
+	public int getAntHealthLevel() {
+		return Ant.getInstance().getHealthLevel();
+	}
+	
+	// --- Sound Controls ---
+	public void setSound(boolean setting) {
+		this.sound = setting;
+		System.out.println("Sound is now " + (sound ? "ON" : "OFF"));
+		
+		setChanged();
+		notifyObservers();
+	}
+	
+	// --- Game Actions (Called by Commands) ---
+	
+	public void accelerateAnt() {
+		Ant ant = Ant.getInstance();
+		if (ant != null) {
+			ant.setSpeed(ant.getSpeed() + 5);
+			System.out.println("Accelerating the ant.");
+			
+			setChanged();
+			notifyObservers();
+		}
+	}
+	
+	public void brakeAnt() {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            ant.setSpeed(ant.getSpeed() - 5);
+            System.out.println("Braking the ant.");
+            
+            setChanged();
+            notifyObservers();
+        }
+	}
+	
+	public void turnAntLeft() {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            ant.setHeading(ant.getHeading() - 5);
+            System.out.println("Turning left.");
+            
+            setChanged();
+            notifyObservers();
+        }
+	}
+	
+	public void turnAntRight() {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            ant.setHeading(ant.getHeading() + 5);
+            System.out.println("Turning right.");
+            
+            setChanged();
+            notifyObservers();
+        }
+    }
+	
+	
+	
+	
+    public void pretendFlagCollision(int flagNum) {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            
+            if (flagNum == ant.getLastFlagReached() + 1) {
+                ant.setLastFlagReached(flagNum);
+                System.out.println("Collided with flag " + flagNum);
+                // Check for win condition
+                if (flagNum == this.lastFlagNum) {
+                    System.out.println("Game over, you win! Total time: " + this.clock);
+                    exitGame();
+                }
+            }
+
+            
+            setChanged();
+            notifyObservers();
+        }        
+    }
+
+    public void pretendFoodCollision() {
+		Ant ant = Ant.getInstance();
+        FoodStation station = getRandomFoodStation();
+        
+        if (ant != null && station != null) {
+            int foodAmount = station.getCapacity();
+            ant.setFoodLevel(ant.getFoodLevel() + foodAmount);
+            station.setCapacity(0);
+            station.setColor(ColorUtil.rgb(150, 220, 150)); // Faded green
+            gameObjects.add(new FoodStation()); // Add a new station
+            System.out.println("Collided with a food station.");
+            
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    public void pretendSpiderCollision() {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            ant.setHealthLevel(ant.getHealthLevel() - 1);
+            ant.fadeColor();
+            System.out.println("Collided with a spider.");
+            checkAntState(); // Check if this collision caused a loss
+            
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    public void tickClock() {
+        this.clock++;
+
+        // Update all movable objects 
+        IIterator moveIter = gameObjects.getIterator();
+        while (moveIter.hasNext()) {
+        	GameObject obj = moveIter.getNext();
+        	if (obj instanceof Moveable) {
+        		((Moveable) obj).move();  // might need to send in world boundaries so movables can check if they are in bounds in the future
+        	}
+        }
+        
+        
+        // this is probably where I want to check for collisions in the future
+        
+        
+        System.out.println("Clock has ticked. Current time: " + this.clock);
+        checkAntState(); // Check if ant lost a life
+        
+
+        
+        setChanged();
+        notifyObservers();
+    }
+    
+    public void displayGameState() {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            System.out.println("--- Game State ---");
+            System.out.println("Lives left: " + this.lives);
+            System.out.println("Clock: " + this.clock);
+            System.out.println("Highest Flag Reached: " + ant.getLastFlagReached());
+            System.out.println("Ant Food Level: " + ant.getFoodLevel());
+            System.out.println("Ant Health Level: " + ant.getHealthLevel());
+            System.out.println("Sound: " + (this.sound ? "ON" : "OFF"));
+            System.out.println("------------------");
+        }
+    }
+
+    public void outputMap() {
+        System.out.println("\n--- World Map ---");
+        
+        IIterator iterator = gameObjects.getIterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.getNext().toString());
+        }
+        System.out.println("-----------------\n");
+    }
+
+    public void exitGame() {
+    	System.out.println("Exiting game...");
+        System.exit(0);
+    }
+
+    private void checkAntState() {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            if (ant.getHealthLevel() <= 0 || ant.getFoodLevel() <= 0) {
+                this.lives--;
+                System.out.println("You lost a life! Lives remaining: " + this.lives);
+                
+                setChanged();
+                notifyObservers();
+                
+                if (this.lives <= 0) {
+                    System.out.println("Game over, you failed!");
+                    exitGame();
+                } else {
+                    // Re-initialize the world for the next life
+                    init();
+                }
+            }
+        }
+    }
+
+
+    private FoodStation getRandomFoodStation() {
+    	
+    	IIterator iterator = gameObjects.getIterator();
+        ArrayList<FoodStation> stations = new ArrayList<>();
+        
+        while (iterator.hasNext()) {
+        	GameObject obj = iterator.getNext();
+            if (obj instanceof FoodStation) {
+                if (((FoodStation) obj).getCapacity() > 0) {
+                    stations.add((FoodStation) obj);
+                }
+            }
+        }
+        if (stations.size() > 0) {
+            return stations.get(new Random().nextInt(stations.size()));
+        }
+        return null;
+    }
+    
+    public void changeAntConsumptionRate() {
+		Ant ant = Ant.getInstance();
+        if (ant != null) {
+            Random rand = new Random();
+            int change = rand.nextInt(5) - 2;
+            if (change == 0) {
+                change = 1; // make sure it's non-zero
+            }
+
+            int currentRate = ant.getFoodConsumptionRate();
+            int newRate = currentRate + change;
+
+            // If the new rate would be zero or negative, set it to the old rate + 1.
+            if (newRate <= 0) {
+                ant.setFoodConsumption(currentRate + 1);
+            } else {
+                ant.setFoodConsumption(newRate);
+            }
+            System.out.println("Ant's food consumption rate has been changed.");
+
+            
+            setChanged();
+            notifyObservers();
+        }
+    }
+    
+}
